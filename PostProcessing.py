@@ -95,11 +95,11 @@ with dai.Device(pipeline) as device:
 		frame = (frame * (255 / depth.initialConfig.getMaxDisparity())).astype(np.uint8)
 
 		# Available color maps: https://docs.opencv.org/3.4/d3/d50/group__imgproc__colormap.html
-		frame_normal = cv2.applyColorMap(frame_normal, cv2.COLORMAP_JET)
+		frame_normal = cv2.applyColorMap(frame_normal, cv2.COLORMAP_MAGMA)
 		cv2.imshow("disparity_color_normal", frame_normal)
 
 		# Available color maps: https://docs.opencv.org/3.4/d3/d50/group__imgproc__colormap.html
-		frame = cv2.applyColorMap(frame, cv2.COLORMAP_JET)
+		frame = cv2.applyColorMap(frame, cv2.COLORMAP_MAGMA)
 		cv2.imshow("disparity_color", frame)
 
 		# Retrieve 'bgr' (opencv format) frame
