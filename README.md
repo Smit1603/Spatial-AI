@@ -72,7 +72,7 @@ For further information kindly check folder [Fusion](Fusion)
 
 
 | Original Scene | OAK-D Stereo | Pre + Post Processing | MiDAS MDE | Fusion |
-|-----|-----|-----|-----|-----|-----|
+|-----|-----|-----|-----|-----|
 
 ### License
 
