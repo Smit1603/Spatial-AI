@@ -1,13 +1,13 @@
 # Converter
 
 
-##About
+## About
 
 
 Above folder consists of all required files and codes required to convert pretrained models to onnx files so that they can be converted to blob files to be integrated on **Oak-D Pipeline**.
 
-##Steps
-####1. For generating blob path for Monocular Depth Estimation (MDE) 
+## Steps
+#### 1. For generating blob path for Monocular Depth Estimation (MDE) 
 
 
 To convert pretrained model to blob file , obey following steps :
@@ -29,7 +29,7 @@ To convert pretrained model to blob file , obey following steps :
 
 5. Check whether blob model has been generated in **Blob** folder.
 
-####2. For generating blob path for Pre-Processing
+#### 2. For generating blob path for Pre-Processing
 
 
 1. Run following commands on terminal prompt
