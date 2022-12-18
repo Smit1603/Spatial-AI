@@ -20,7 +20,7 @@ Depth Estimation algorithms using Neural Networks have made enormous strides rec
 
 1. Install Depthai and many other important librariesutilized in this project by running following command :
 ```
-    pip install requirement.txt
+    pip install -r requirements.txt
 ```
 2. You must have an OAK-D camera
 3. Required weights and models for code can be installed from [Converter] 
@@ -48,7 +48,7 @@ MiDAS is a pretrained model which improves Monocular Depth Estimation (MDE) of m
 The success of monocular depth estimation relies on large and diverse training sets. Due to the challenges associated with acquiring dense ground-truth depth across different environments at scale, a number of datasets with distinct characteristics and biases have emerged.
 MiDaS was trained on 10 datasets (ReDWeb, DIML, Movies, MegaDepth, WSVD, TartanAir, HRWSI, ApolloScape, BlendedMVS, IRS) with multi-objective optimization.
 
-| Normal RGB video | MiDAS MDE |
+| Normal RGB Image | MiDAS MDE |
 |-------|---------|
 | ![RGB_Trial.jpg]() | ![MiDAS_MDE.jpg]() |
 
@@ -67,6 +67,12 @@ For further information kindly check folder [Fusion](Fusion)
 | Original Scene | Steeo Disparity By OAK-D | MiDAS Disparity | Fused Disparity Map |
 |--------|--------|--------|--------|
 |![Original-Scene]()|![Stereo-Disparity]()|![MiDAS-Disparity]()|![Fused-Disparity]()|
+
+##### Demo
+Run following command on terminal
+```
+    python3 main.py
+```
 
 ### Results
 
