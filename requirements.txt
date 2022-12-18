@@ -1,0 +1,13 @@
+depthai
+opencv-python
+numpy
+onnx-simplifier
+onnx
+scikit-image
+torch
+kornia
+blobconverter
+torchvision
+tensorflow
+path
+timm
