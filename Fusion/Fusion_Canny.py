@@ -1,38 +1,19 @@
+
+
+
+
+
 import cv2
 import depthai as dai
 import numpy as np
 import time
 import torch
 import sys
-import os 
+from scipy.spatial import distance,cKDTree
 from PIL import Image as im
-import os
-
-
-def fusion(Wc,Zs,Zm):
-    Wc=1/(1+np.exp(0.25*cv2.normalize(np.float32(Wc),None,0,5,norm_type=cv2.NORM_MINMAX)))
-    #Wc=np.where(Wc>0.5,1,0)
-    Zs=Zs+1e-7
-    Zm=Zm+1e-7
-   
-    # Zs=cv2.cvtColor(Zs,cv2.COLOR_RGB2GRAY)+1e-7
-    # cv2.imshow("Zs",Zs)
-    # cv2.waitKey(1)
-    # Zm=cv2.cvtColor(Zm,cv2.COLOR_BGR2GRAY)+1e-7
-    maxZs=np.max(Zs)
-    maxZm_scale=255
-    ratio=maxZs/maxZm_scale
-    Nzm=Zm/maxZm_scale
-    Nzs=Zs/maxZs
-    Ws=np.where(Nzs>Nzm,Nzm/Nzs,Nzs/Nzm)
-    #Ws=np.exp(np.where(Nzs>Nzm,Nzm/Nzs,Nzs/Nzm))/2.71
-   # Z_final=(Wc)*Zs+(1-Wc)*(Zm*ratio)
-    Z_final=(Wc)*Zs+(1-Wc)*((1-Ws)*Zm*ratio+Ws*Zs)
-    #Z_final=np.where(Wc<0.23,Zm*ratio,Wc*Zs+(1-Wc)*((1-Ws)*Zm*ratio+Ws*Zs))
-    #print(np.max(Z_final))
-    # print(Z_final)
-    return Z_final
+import os 
 blobfolder=os.path.dirname(os.path.abspath(__file__))+"/Converter/Blob"
+
 try:
     blobfilename=os.listdir(blobfolder)[0]
     
@@ -40,7 +21,7 @@ try:
 
     if not os.path.isfile(blobpath):
         blobpath=blobpath+"/"+os.listdir(blobpath)[0]
-    
+  
     if os.stat(blobpath).st_size<45600000:
         shape = (1, 256, 256)
     else:
@@ -50,6 +31,42 @@ except:
 
 
 
+def fusion(orgimg,Zs,Zm):
+    Zs=Zs+1e-7
+    Zm=Zm+1e-7
+    maxZs=np.max(Zs)
+    maxZm_scale=255
+    ratio=maxZs/maxZm_scale
+    Wc=get_Wc(orgimg)
+    Nzm=Zm/maxZm_scale
+    Nzs=Zs/maxZs
+    Ws=np.where(Nzs>Nzm,Nzm/Nzs,Nzs/Nzm)
+    Z_final=np.where(Wc==0,Zm*ratio,Wc*Zs+(1-Wc)*((1-Ws)*Zm*ratio+Ws*Zs))
+    return Z_final
+def get_Wc(frame):
+    img=cv2.cvtColor(frame,cv2.COLOR_RGB2GRAY)
+    img = cv2.GaussianBlur(img,(5,5),cv2.BORDER_DEFAULT)
+    v = np.median(img)
+    sigma = 0.33
+    lower_thresh = int(max(0, (1.0 - sigma) * v))
+    upper_thresh = int(min(255, (1.0 + sigma) * v))
+    imgCanny=cv2.Canny(img,lower_thresh,upper_thresh)
+    imgCanny=np.asarray(imgCanny)
+    cv2.imshow("iCanny",imgCanny)
+    cv2.waitKey(1)
+   
+    edges_coords=np.where(imgCanny==255)
+    edges_coords=np.column_stack((edges_coords[0],edges_coords[1]))
+   
+    tree = cKDTree(edges_coords)
+    
+    coords=np.where(img>-1)
+    coords=np.column_stack((coords[0],coords[1]))
+
+    min_distance_arr=tree.query(coords,distance_upper_bound=5)[0].reshape(*shape[1:])
+    wc= 1/(1+np.exp(0.25*min_distance_arr))
+    return wc
+
 
 def getFrame(queue):
     frame = queue.get()
@@ -57,24 +74,19 @@ def getFrame(queue):
     return frame.getCvFrame()
 
 
-model_type='midas-small'
-new_frame_time,prev_frame_time,frame_count=0,0,0
-# Closer-in minimum depth, disparity range is doubled (from 95 to 190):
+
+
+
 extended_disparity = False
-# Better accuracy for longer distance, fractional disparity 32-levels:
+
 subpixel = False
-# Better handling for occlusions:
+
 lr_check = True
 
-# if (model_type=="midas-small"):
-#     blobpath="/home/raghav/depthai-python/examples/ColorCamera/model-small-simplified-final_6.blob/model-small-simplified_openvino_2021.4_6shave.blob"
-#     shape = (1, 256, 256)
-# elif (model_type=="midas-hybrid"):
-#     blobpath="/home/raghav/depthai-python/examples/ColorCamera/dpt_hybrid-simplified_openvino_2021.4_6shave_2.blob"
-#     shape=(1,384,384)
 
 
-
+new_frame_time,prev_frame_time,frame_count=0,0,0
+# Create pipeline
 device = dai.Device()
 pipeline = dai.Pipeline()
 pipeline.setOpenVINOVersion(dai.OpenVINO.VERSION_2021_4)
@@ -134,7 +146,6 @@ camRgb.setFps(60)
 manipRgb = pipeline.create(dai.node.ImageManip)
 manipRgb2 = pipeline.create(dai.node.ImageManip)
 manipStereo = pipeline.create(dai.node.ImageManip)
-manipConf = pipeline.create(dai.node.ImageManip)
 
 
 #resizing images using image manip
@@ -146,10 +157,11 @@ manipRgb.initialConfig.setFrameType(dai.ImgFrame.Type.BGR888p)
 
 manipRgb.setKeepAspectRatio(1)
 manipRgb2.setKeepAspectRatio(1)
-#manipRgb.setNumFramesPool(60)
+
 
 manipStereo.initialConfig.setResize(*(shape[1:]))
-manipConf.initialConfig.setResize(*(shape[1:]))
+
+
 
 
 
@@ -157,7 +169,7 @@ manipConf.initialConfig.setResize(*(shape[1:]))
 camRgb.isp.link(manipRgb.inputImage)
 camRgb.isp.link(manipRgb2.inputImage)
 
-#create networks
+
 nn = pipeline.create(dai.node.NeuralNetwork)
 
 nn.setBlobPath(blobpath)
@@ -178,34 +190,29 @@ nn_xout.input.setQueueSize(1000)
 Stereo_xout = pipeline.create(dai.node.XLinkOut)
 Stereo_xout.setStreamName("STEREO")
 
-
-
-Confidence_xout=pipeline.create(dai.node.XLinkOut)
-Confidence_xout.setStreamName("CMAP")
-
-
-
-#linking -->
-
-
-
+RGB_xout = pipeline.create(dai.node.XLinkOut)
+RGB_xout.setStreamName("RGB")
 
 
 monoLeft.out.link(depth.left)
 monoRight.out.link(depth.right)
+
+
+
+
+
+
+manipRgb2.out.link(RGB_xout.input)
+
 nn.out.link(nn_xout.input)
 
 
 depth.disparity.link(manipStereo.inputImage)
-depth.confidenceMap.link(manipConf.inputImage)
-manipConf.out.link(Confidence_xout.input)
 
 
 
 manipStereo.out.link(Stereo_xout.input)
 
-
-# Connect to device and start pipeline
 
 
 
@@ -215,8 +222,7 @@ def get_frame(imfFrame, shape):
 
 counter = 0
 with device:
-   
-    frameConf=None
+    frameRgb=None
     frameDisp=None
     frameMidas=None
     device.startPipeline(pipeline)
@@ -233,55 +239,57 @@ with device:
     startTime = time.monotonic()
     
     while True:
-       
-        latestPacket = {}
         
+        latestPacket = {}
+        latestPacket["RGB"] = None
         latestPacket["STEREO"] = None
         latestPacket["RGB_MIDAS_VIDEO"] = None
-        latestPacket["CMAP"] = None
-        queueEvents = device.getQueueEvents(("STEREO","RGB_MIDAS_VIDEO","CMAP"))
+
+        queueEvents = device.getQueueEvents(("RGB", "STEREO","RGB_MIDAS_VIDEO"))
         for queueName in queueEvents:
             packets = device.getOutputQueue(queueName).tryGetAll()
             if len(packets) > 0:
                 latestPacket[queueName] = packets[-1]
         
 
-        
-        if latestPacket["CMAP"] is not None:
-            
-            frameConf = latestPacket["CMAP"].getCvFrame()
-           
+        if latestPacket["RGB"] is not None:
+            frameRgb = latestPacket["RGB"].getCvFrame()
+            cv2.imshow("RGB", frameRgb)
 
         if latestPacket["STEREO"] is not None:
             frameDisp = latestPacket["STEREO"].getFrame()
             maxDisparity = depth.initialConfig.getMaxDisparity()
-         
-            if 1: frameDisp = (frameDisp * 255. / maxDisparity).astype(np.uint8)
             
+            if 1: frameDisp = (frameDisp * 255. / maxDisparity).astype(np.uint8)
+           
             if 1: frameDispColor = cv2.applyColorMap(frameDisp, cv2.COLORMAP_MAGMA)
             frameDispColor = np.ascontiguousarray(frameDispColor)
-            
-
+            cv2.imshow("STEREO", frameDispColor)
 
 
         if latestPacket["RGB_MIDAS_VIDEO"] is not None:
             frameMidas=get_frame(latestPacket["RGB_MIDAS_VIDEO"],shape)
             frameMidas=cv2.normalize(np.float32(frameMidas),None,0,1,norm_type=cv2.NORM_MINMAX)
             frameMidas=((frameMidas*255).astype(np.uint8))
-            
+            frameMidasColor=cv2.applyColorMap(frameMidas,cv2.COLORMAP_MAGMA)
+            cv2.imshow('MIDAS-RGB-OAKD',frameMidasColor)
         
-        if frameConf is not None and frameDisp is not None and frameMidas is not None:
-          
-            fused_frame=fusion(frameConf,frameDisp,frameMidas)
+        if frameRgb is not None and frameDisp is not None and frameMidas is not None:
+   
+            fused_frame=fusion(frameRgb,frameDisp,frameMidas)
             fused_frame=cv2.normalize(np.float32(fused_frame),None,0,1,norm_type=cv2.NORM_MINMAX)
             fused_frame = cv2.medianBlur(fused_frame, 5)
             fused_frame=(fused_frame*255).astype(np.uint8)
+           
             fused_frame=cv2.applyColorMap(fused_frame,cv2.COLORMAP_MAGMA)
             cv2.imshow('FUSION',fused_frame)
-            frameMidas,frameDisp,frameConf=None,None,None
-           
-       
-        
+            frameRgb,frameDisp,frameRgb=None,None,None
 
         if cv2.waitKey(1) == ord('q'):
             break
+
+
+
+
+        
+      
