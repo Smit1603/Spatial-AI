@@ -12,23 +12,25 @@ import sys
 from scipy.spatial import distance,cKDTree
 from PIL import Image as im
 import os 
-blobfolder=os.path.dirname(os.path.abspath(__file__))+"/Converter/Blob"
+blobfolder=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+"/scripts/Blob"
+blobfilename=os.listdir(blobfolder)[0]
 
-try:
-    blobfilename=os.listdir(blobfolder)[0]
+blobpath=blobfolder+"/"+blobfilename
+
+if not os.path.isfile(blobpath):
+    blobpath=blobpath+"/"+os.listdir(blobpath)[0]
+if blobfilename==".gitkeep":
+    raise Exception("Blob file has not been correctly stored inside scripts/Blob folder")
+if blobfilename=="Midas-Small.blob":
+    shape=(1, 256, 256)
+elif blobfilename=="Midas-Hybrid.blob":
+    shape=(1,384,384)
+elif os.stat(blobpath).st_size<45600000:
+    shape = (1, 256, 256)
+else:
+    shape=(1,384,384)
+
     
-    blobpath=blobfolder+"/"+blobfilename
-
-    if not os.path.isfile(blobpath):
-        blobpath=blobpath+"/"+os.listdir(blobpath)[0]
-  
-    if os.stat(blobpath).st_size<45600000:
-        shape = (1, 256, 256)
-    else:
-        shape=(1,384,384)
-except: 
-    raise Exception("Blob files have not been correctly stored inside blobs folder")
-
 
 
 def fusion(orgimg,Zs,Zm):
@@ -283,7 +285,12 @@ with device:
            
             fused_frame=cv2.applyColorMap(fused_frame,cv2.COLORMAP_MAGMA)
             cv2.imshow('FUSION',fused_frame)
-            frameRgb,frameDisp,frameRgb=None,None,None
+            try:
+                if (not np.sum(np.abs(frameDisp-prevFrameDisp))<50):
+                    frameMidas,frameDisp,frameRgb=None,None,None
+            except:
+                pass
+            prevFrameDisp=frameDisp
 
         if cv2.waitKey(1) == ord('q'):
             break

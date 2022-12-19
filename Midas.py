@@ -2,26 +2,30 @@ import cv2
 import depthai as dai
 import numpy as np
 import time
+import os 
 new_frame_time=0
 prev_frame_time=0
 frame_count=0
 
 
 blobfolder=os.path.dirname(os.path.abspath(__file__))+"/scripts/Blob"
-try:
-    blobfilename=os.listdir(blobfolder)[0]
-    
-    blobpath=blobfolder+"/"+blobfilename
+blobfilename=os.listdir(blobfolder)[0]
 
-    if not os.path.isfile(blobpath):
-        blobpath=blobpath+"/"+os.listdir(blobpath)[0]
-    
-    if os.stat(blobpath).st_size<45600000:
-        shape = (1, 256, 256)
-    else:
-        shape=(1,384,384)
-except: 
-    raise Exception("Blob files have not been correctly stored inside blobs folder")
+blobpath=blobfolder+"/"+blobfilename
+
+if not os.path.isfile(blobpath):
+    blobpath=blobpath+"/"+os.listdir(blobpath)[0]
+if blobfilename==".gitkeep":
+    raise Exception("Blob file has not been correctly stored inside scripts/Blob folder")
+if blobfilename=="Midas-Small.blob":
+    shape=(1, 256, 256)
+elif blobfilename=="Midas-Hybrid.blob":
+    shape=(1,384,384)
+elif os.stat(blobpath).st_size<45600000:
+    shape = (1, 256, 256)
+else:
+    shape=(1,384,384)
+
 
 # Create pipeline
 pipeline = dai.Pipeline()
