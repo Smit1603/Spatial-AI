@@ -35,3 +35,6 @@ To convert pretrained model to blob file , obey following steps :
 ```
     python3 Pre_Processing.py
 ```
+#### 3. To download generated blob files directly , click on the given link
+
+1. [MiDAS-Small]()

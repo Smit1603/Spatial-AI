@@ -1,13 +1,13 @@
-depthai
-opencv-python
-numpy
-onnx-simplifier
-onnx
-scikit-image
-torch
-kornia
-blobconverter
-torchvision
-tensorflow
-path
-timm
+depthai == 2.19.1.0
+opencv-python == 4.6.0.66
+numpy == 1.23.5
+onnx-simplifier 
+onnx == 1.13.0
+scikit-image 
+torch == 1.13.1
+kornia == 0.6.8
+blobconverter == 1.3.0
+torchvision == 0.14.1
+tensorflow == 2.11.0
+path == 16.6.0
+timm == 0.6.12
