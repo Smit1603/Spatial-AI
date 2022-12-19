@@ -24,7 +24,7 @@ Depth estimation is traditionally done using a pair of cameras called a stereo p
 Depth Estimation algorithms using Neural Networks have made enormous strides recently. Some algorithms estimate depth using a single image (monocular depth), others use neural networks to improve the depth estimated using a stereo pair, and some improve the depth estimation for RGBD cameras.
 | Original Image | Disparity Map
 |-----|-----|
-|![RGB](RGB.jpg)|![Depth](Depth.png)|
+|![RGB](Assets/Results/Result_Image_2/FrameRGB_3.jpg)|![Depth](Assets/Results/Result_Image_2/FusedRGB_3.jpg)|
 
 ## Getting Started
 
@@ -68,7 +68,7 @@ MiDaS was trained on 10 datasets (ReDWeb, DIML, Movies, MegaDepth, WSVD, TartanA
 
 #### Demo
 1. Download prerequisite files from the [scripts](scripts) and perform following step.
-Run following command on terminal
+2. Run following command on terminal
 ```
     python3 Midas.py
 ```
@@ -85,7 +85,7 @@ For further information kindly check folder [Fusion](Fusion)
 
 #### Demo
 1. Download prerequisite files from [scripts](scripts) and then perform following steps.
-Run following command on terminal
+2. Run following command on terminal
 ```
     python3 main.py
 ```
@@ -94,12 +94,20 @@ Run following command on terminal
 
 
 | Original Scene | OAK-D Stereo | MiDAS MDE | Fusion |
-|-----|-----|-----|-----|-----|
+|-----|-----|-----|-----|
 |![Original-Scene](Assets/Results/Result_Image_1/FrameRGB_2.jpg)|![Stereo-Disparity](Assets/Results/Result_Image_1/FrameStereo_2.jpg)|![MiDAS-Disparity](Assets/Results/Result_Image_1/FrameMidas_2.jpg)|![Fused-Disparity](Assets/Results/Result_Image_1/FusedRGB_2.jpg)|
 |![Original-Scene](Assets/Results/Result_Image_2/FrameRGB_3.jpg)|![Stereo-Disparity](Assets/Results/Result_Image_2/FrameStereo_3.jpg)|![MiDAS-Disparity](Assets/Results/Result_Image_2/FrameMidas_3.jpg)|![Fused-Disparity](Assets/Results/Result_Image_2/FusedRGB_3.jpg)|
 |![Original-Scene](Assets/Images/ResultVideo1_RGB_1.gif)|![Stereo-Disparity](Assets/Images/ResultVideo1_Stereo_1.gif)|![MiDAS-Disparity](Assets/Images/ResultVideo1_Midas_1.gif)|![Fused-Disparity](Assets/Images/ResultVideo1_Fusion_1.gif)|
 |![Original-Scene](Assets/Images/ResultVideo2_RGB.gif)|![Stereo-Disparity](Assets/Images/ResultVideo2_Stereo.gif)|![MiDAS-Disparity](Assets/Images/ResultVideo2_Midas.gif)|![Fused-Disparity](Assets/Images/ResultVideo2_Fusion.gif)|
 
+Following is the final result of our methodology with its real time analysis in Frames Per Second (FPS)
+
+| Methods | FPS |
+|-----------|----------|
+| Pre+ post processing on Stereo | 25 |
+| Only MiDAS | 18 |
+| Fusion Using CMAP From OAK - D | 15 |
+| Fusion Using canny edge on RGB | 13|
 
 ### License
 
