@@ -7,9 +7,9 @@
 - [Getting Started](#Getting-Started)
 - [Prerequisites and Installations](#Prerequisites-And-Installations)
 - [Methodologies Proposed](#Methodologies-Proposed)
-  - [Proposal 1 : Using Processing Techniques](#Proposal-1--Implementing-Pre--Post-Processing)
-  - [Proposal 2 : Using MDE](#Proposal-2--Applying-Midas-Model-On-RGB-Video-MDE)
-  - [Proposal 3 : Fusion Of Stereo And MDE](#Proposal-3--Fusing-Stereo-Disparity-Map-and-MDE-Disparity-Map)
+  - [Proposal 1 : Using Processing Techniques](#Part-1--Implementing-Pre--Post-Processing)
+  - [Proposal 2 : Using MDE](#Part-2--Applying-Midas-Model-On-RGB-Video-MDE)
+  - [Proposal 3 : Fusion Of Stereo And MDE](#Part-3--Fusing-Stereo-Disparity-Map-and-MDE-Disparity-Map)
 -  [Results](#Results)
 -  [License](#License)
 
