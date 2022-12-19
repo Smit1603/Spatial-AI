@@ -5,7 +5,7 @@
 - [Aim](#Aim)
 - [About the Project](#About-The-Project)
 - [Getting Started](#Getting-Started)
-- [Prerequisites and installlation](#Prerequisites-And-Installlation)
+- [Prerequisites and installlation](#Prerequisites-And-Installation)
 - [Methodologies Proposed](#Methodologies-Proposed)
   - [Proposal 1 : Using Processing Techniques](#Proposal-1-:-Implementing-Pre-+-Post-Processing)
   - [Proposal 2 : Using MDE](#Proposal-2-:-Applying-Midas-Model-On-RGB-Video-[MDE])
