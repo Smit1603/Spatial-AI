@@ -11,22 +11,23 @@ Above folder consists of all required files and codes required to convert pretra
 
 To convert pretrained model to blob file , obey following steps :
 
+1. Run the following script on your terminal window in order to generate blob files for either Midas-small or Midas-Hybrid.
 
-1. Download weights of the model from given link.
-   - [Midas Small](https://github.com/isl-org/MiDaS/releases/download/v2_1/midas_v21_small-70d6b9c8.pt)
-   - [Midas Hybrid](https://github.com/isl-org/MiDaS/releases/download/v3/dpt_hybrid-midas-501f0c75.pt)
+**Note** : Using Midas-Hybrid can reduce the fps by significant amounts 
 
-2. Store downloaded weights in folder `Weights`.
-(And update the path of the weights in code)
-
-3. Run the following script on your terminal window.
 ```
     python3 MDE.py
 ```
 
-4. Check whether onnx model has been generated in `Onnx` folder.
+2. Check whether onnx model has been generated in `Onnx` folder.
 
-5. Check whether blob model has been generated in `Blob` folder.
+3. Check whether blob model has been generated in `Blob` folder.
+
+Alternatively , if the above method does not work as expected you can directly download the blob files from the given link and place it in Blob folder  :
+
+1. [Midas-Small](https://drive.google.com/file/d/1b-TD8QRocneNIceggphgY-qqx-quQpQs/view?usp=share_link)
+2. [Midas-Hybrid](https://drive.google.com/file/d/12Y1ON640Ub1PhYEKWJ3HTVKBFAf9Exki/view?usp=share_link)
+
 
 #### 2. For generating blob path for Pre-Processing
 
@@ -35,3 +36,6 @@ To convert pretrained model to blob file , obey following steps :
 ```
     python3 Pre_Processing.py
 ```
+Alternatively , if the above method does not work as expected you can directly download the blob file for pre-processing from [here](https://drive.google.com/file/d/1CTB0ICW1h2Z7RxcEv2zGRP0dTZBa_sFX/view?usp=share_link) and place it in Blob folder.
+
+**Note** : It is recommended that you place only one blob file in blobs folder and try the corresponding method . For trying a new method you can generate a new blob file and replace it with previous .
