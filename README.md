@@ -1,7 +1,7 @@
 # Depth-Estimation  
 
 
-# Table of contents
+## Table of contents
 - [Aim](#Aim)
 - [About the Project](#About-The-Project)
 - [Getting Started](#Getting-Started)
@@ -90,7 +90,7 @@ For further information kindly check folder [Fusion](Fusion)
     python3 main.py
 ```
 
-### Results
+## Results
 
 
 | Original Scene | OAK-D Stereo | MiDAS MDE | Fusion |
@@ -109,7 +109,7 @@ Following is the final result of our methodology with its real time analysis in 
 | Fusion Using CMAP From OAK - D | 15 |
 | Fusion Using canny edge on RGB | 13|
 
-### License
+## License
 
 
 [MIT License]() is added to project. 
