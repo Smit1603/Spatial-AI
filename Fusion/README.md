@@ -68,7 +68,7 @@ where d is the discrete distance in pixels from pixel (x, y ) until the closest 
 
 On the left , we have the original rgb image and on the right we have the stereo confidence map overlaid on the rgb image . Edges appear bright and pixels close to the edges appear grey. 
 
-###Method 2 - Using Stereo Confidence Map of Oak-D Pro
+### Method 2 - Using Stereo Confidence Map of Oak-D Pro
 
 Oak - D Pro already provides confidence of its stereo camera . We use the confidenceMap property of the depth node to access the confidence map and use an XLinkOut to obtain it from the pipeline for fusion . 
 
