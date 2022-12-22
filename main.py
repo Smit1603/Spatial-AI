@@ -11,42 +11,40 @@ import os
 
 def fusion(Wc,Zs,Zm):
     Wc=1/(1+np.exp(0.25*cv2.normalize(np.float32(Wc),None,0,5,norm_type=cv2.NORM_MINMAX)))
-    #Wc=np.where(Wc>0.5,1,0)
+ 
     Zs=Zs+1e-7
     Zm=Zm+1e-7
    
-    # Zs=cv2.cvtColor(Zs,cv2.COLOR_RGB2GRAY)+1e-7
-    # cv2.imshow("Zs",Zs)
-    # cv2.waitKey(1)
-    # Zm=cv2.cvtColor(Zm,cv2.COLOR_BGR2GRAY)+1e-7
+    
     maxZs=np.max(Zs)
     maxZm_scale=255
     ratio=maxZs/maxZm_scale
     Nzm=Zm/maxZm_scale
     Nzs=Zs/maxZs
     Ws=np.where(Nzs>Nzm,Nzm/Nzs,Nzs/Nzm)
-    #Ws=np.exp(np.where(Nzs>Nzm,Nzm/Nzs,Nzs/Nzm))/2.71
-   # Z_final=(Wc)*Zs+(1-Wc)*(Zm*ratio)
+   
     Z_final=(Wc)*Zs+(1-Wc)*((1-Ws)*Zm*ratio+Ws*Zs)
-    #Z_final=np.where(Wc<0.23,Zm*ratio,Wc*Zs+(1-Wc)*((1-Ws)*Zm*ratio+Ws*Zs))
-    #print(np.max(Z_final))
-    # print(Z_final)
+   
     return Z_final
-blobfolder=os.path.dirname(os.path.abspath(__file__))+"/Converter/Blob"
-try:
-    blobfilename=os.listdir(blobfolder)[0]
-    
-    blobpath=blobfolder+"/"+blobfilename
 
-    if not os.path.isfile(blobpath):
-        blobpath=blobpath+"/"+os.listdir(blobpath)[0]
-    
-    if os.stat(blobpath).st_size<45600000:
-        shape = (1, 256, 256)
-    else:
-        shape=(1,384,384)
-except: 
-    raise Exception("Blob files have not been correctly stored inside blobs folder")
+blobfolder=os.path.dirname(os.path.abspath(__file__))+"/scripts/Blob"
+blobfilename=os.listdir(blobfolder)[0]
+
+blobpath=blobfolder+"/"+blobfilename
+
+if not os.path.isfile(blobpath):
+    blobpath=blobpath+"/"+os.listdir(blobpath)[0]
+if blobfilename==".gitkeep":
+    raise Exception("Blob file has not been correctly stored inside scripts/Blob folder")
+if blobfilename=="Midas-Small.blob":
+    shape=(1, 256, 256)
+elif blobfilename=="Midas-Hybrid.blob":
+    shape=(1,384,384)
+elif os.stat(blobpath).st_size<45600000:
+    shape = (1, 256, 256)
+else:
+    shape=(1,384,384)
+
 
 
 
@@ -66,12 +64,7 @@ subpixel = False
 # Better handling for occlusions:
 lr_check = True
 
-# if (model_type=="midas-small"):
-#     blobpath="/home/raghav/depthai-python/examples/ColorCamera/model-small-simplified-final_6.blob/model-small-simplified_openvino_2021.4_6shave.blob"
-#     shape = (1, 256, 256)
-# elif (model_type=="midas-hybrid"):
-#     blobpath="/home/raghav/depthai-python/examples/ColorCamera/dpt_hybrid-simplified_openvino_2021.4_6shave_2.blob"
-#     shape=(1,384,384)
+
 
 
 
@@ -278,7 +271,13 @@ with device:
             fused_frame=(fused_frame*255).astype(np.uint8)
             fused_frame=cv2.applyColorMap(fused_frame,cv2.COLORMAP_MAGMA)
             cv2.imshow('FUSION',fused_frame)
-            frameMidas,frameDisp,frameConf=None,None,None
+            try:
+                if (not np.sum(np.abs(frameDisp-prevFrameDisp))<50):
+                    frameMidas,frameDisp,frameConf=None,None,None
+            except:
+                pass
+            prevFrameDisp=frameDisp
+            
            
        
         

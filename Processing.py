@@ -5,8 +5,7 @@ import os
 import depthai as dai
 import numpy as np
 import time
-current_time,startTime=0,0
-counter=0
+
 # Closer-in minimum depth, disparity range is doubled (from 95 to 190):
 extended_disparity = False
 # Better accuracy for longer distance, fractional disparity 32-levels:
@@ -16,17 +15,15 @@ lr_check = True
 
 
 blobfolder=os.path.dirname(os.path.abspath(__file__))+"/scripts/Blob"
-shape=(1,256,256)
-try:
-    blobfilename=os.listdir(blobfolder)[0]
-    
-    blobpath=blobfolder+"/"+blobfilename
+blobfilename=os.listdir(blobfolder)[0]
 
-    if not os.path.isfile(blobpath):
-        blobpath=blobpath+"/"+os.listdir(blobpath)[0]
-    
-except: 
-    raise Exception("Blob files have not been correctly stored inside blobs folder")
+blobpath=blobfolder+"/"+blobfilename
+
+if not os.path.isfile(blobpath):
+    blobpath=blobpath+"/"+os.listdir(blobpath)[0]
+if blobfilename==".gitkeep":
+    raise Exception("Blob file has not been correctly stored inside scripts/Blob folder")
+
 
 
 def getFrame(queue):
@@ -107,17 +104,14 @@ manipRight2.out.link(depth.right)
 
 # print("sj")
 
-manipstereo = pipeline.create(dai.node.ImageManip)
 
-
-manipstereo.initialConfig.setResize(*shape[1:])
 
 xout = pipeline.create(dai.node.XLinkOut) 
 xout.setStreamName("disparity")
 
 
-depth.disparity.link(manipstereo.inputImage)
-manipstereo.out.link(xout.input)
+depth.disparity.link(xout.input)
+
 
 
 with dai.Device(pipeline) as device:
@@ -134,14 +128,6 @@ with dai.Device(pipeline) as device:
       
         frame = (frame * (255 / depth.initialConfig.getMaxDisparity())).astype(np.uint8)
       
-       
-        counter+=1
-        current_time = time.monotonic()
-        if (current_time - startTime) > 1 :
-            fps = counter / (current_time - startTime)
-            counter = 0
-            startTime = current_time
-            print("FPS : {} ".format(fps))
         
         frame = cv2.applyColorMap(frame, cv2.COLORMAP_MAGMA)
         cv2.imshow("Stereo_Processed", frame)
