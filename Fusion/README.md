@@ -90,7 +90,7 @@ where d is the value of pixel at (x,y) in confidence map obtained from Oak-D Pro
 ### Demo
 **To run Fusion on Oak-D Pro , follow the given steps :**
 
-1. Generate blob file for any one model by following steps given in [Convertor](../Assets/Images/Converter) Readme.
+1. Generate blob file for any one model by following steps given in [scripts](../scripts) Readme.
 
 
 1. 
