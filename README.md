@@ -23,7 +23,7 @@ OpenCV AI Competition is an international open source competition on computer vi
 
 Spatial AI track aims to develop a high-quality depth estimation project using OpenCV AI Kit with Depth Pro (OAK-D-Pro) Spatial AI Camera. This camera was designed and developed by Luxonis.
 
-[OpenCV AI Competition 2022](#https://opencv.org/opencv-ai-competition-2022/)
+[OpenCV AI Competition 2022](https://opencv.org/opencv-ai-competition-2022/)
 
 ## Aim
 
