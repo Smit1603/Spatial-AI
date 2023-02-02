@@ -4,6 +4,7 @@
 ## Table of contents
 - [Aim](#Aim)
 - [About the Project](#About-The-Project)
+- [File Structure](#File-Structure)
 - [Getting Started](#Getting-Started)
 - [Prerequisites and Installations](#Prerequisites-And-Installations)
 - [Methodologies Proposed](#Methodologies-Proposed)
@@ -26,6 +27,93 @@ Depth Estimation algorithms using Neural Networks have made enormous strides rec
 |-----|-----|
 |![RGB](Assets/Results/Result_Image_2/FrameRGB_3.jpg)|![Depth](Assets/Results/Result_Image_2/FusedRGB_3.jpg)|
 
+
+## File Structure
+```
+📦Spatial-AI-main
+├── 📂Assets
+│   ├── 📂Images
+│   │   ├── 📜Canny_formula.png
+│   │   ├── 📜Canny_On_RGB.png
+│   │   ├── 📜FusedImg.png
+│   │   ├── 📜Fusion_Formula.png
+│   │   ├── 📜Midasimage.png
+│   │   ├── 📜Nzm_Nzs.png
+│   │   ├── 📜OrgRGB.png
+│   │   ├── 📜Original_RGB.png
+│   │   ├── 📜Raw_stereo.jpeg
+│   │   ├── 📜ResultVideo1_Fusion_1.gif
+│   │   ├── 📜ResultVideo1_Midas_1.gif
+│   │   ├── 📜ResultVideo1_RGB_1.gif
+│   │   ├── 📜ResultVideo1_Stereo_1.gif
+│   │   ├── 📜ResultVideo2_Fusion.gif
+│   │   ├── 📜ResultVideo2_Midas.gif
+│   │   ├── 📜ResultVideo2_RGB.gif
+│   │   ├── 📜ResultVideo2_Stereo.gif
+│   │   ├── 📜StereoImg.png
+│   │   ├── 📜Stereo_pre_post.jpeg
+│   │   ├── 📜Wc_Canny.png
+│   │   ├── 📜Wc_example.png
+│   │   ├── 📜Wc_formula.png
+│   │   ├── 📜Wc_OAKD.png
+│   │   └── 📜Ws.png
+│   ├── 📜README.md
+│   ├── 📂Results
+│   │   ├── 📂Result_Image_1
+│   │   │   ├── 📜FrameMidas_2.jpg
+│   │   │   ├── 📜FrameRGB_2.jpg
+│   │   │   ├── 📜FrameStereo_2.jpg
+│   │   │   └── 📜FusedRGB_2.jpg
+│   │   ├── 📂Result_Image_2
+│   │   │   ├── 📜FrameMidas_3.jpg
+│   │   │   ├── 📜FrameRGB_3.jpg
+│   │   │   ├── 📜FrameStereo_3.jpg
+│   │   │   └── 📜FusedRGB_3.jpg
+│   │   ├── 📂Result_Image_3
+│   │   │   ├── 📜FrameMidas_4.jpg
+│   │   │   ├── 📜FrameRGB_4.jpg
+│   │   │   ├── 📜FrameStereo_4.jpg
+│   │   │   └── 📜FusedRGB_4.jpg
+│   │   ├── 📂Results_Image_4
+│   │   │   ├── 📜FrameMidas_6.jpg
+│   │   │   ├── 📜FrameRGB_6.jpg
+│   │   │   ├── 📜FrameStereo_6.jpg
+│   │   │   └── 📜FusedRGB_6.jpg
+│   │   ├── 📂Result_Video_1
+│   │   │   ├── 📜ResultVideo1_Fusion.avi
+│   │   │   ├── 📜ResultVideo1_Midas.avi
+│   │   │   ├── 📜ResultVideo1_RGB.avi
+│   │   │   └── 📜ResultVideo1_Stereo.avi
+│   │   └── 📂Result_Video_2
+│   │       ├── 📜ResultVideo2_Fusion.avi
+│   │       ├── 📜ResultVideo2_Midas.avi
+│   │       ├── 📜ResultVideo2_RGB.avi
+│   │       └── 📜ResultVideo2_Stereo.avi
+│   └── 📂Videos
+│       └── 📜Synced_FUSION.mp4
+├── 📂Fusion
+│   ├── 📜Fusion_Canny.py
+│   ├── 📜Fusion_Laptop.py
+│   ├── 📜Fusion_OakD.py
+│   ├── 📂MDEMap
+│   ├── 📜README.md
+│   ├── 📂RGBMap
+│   └── 📂StereoMap
+├── 📜main.py
+├── 📜Midas.py
+├── 📜Processing.py
+├── 📜README.md
+├── 📜requirements.txt
+└── 📂scripts
+    ├── 📂Blob
+    ├── 📜blob_generator.py
+    ├── 📜MDE.py
+    ├── 📂Onnx
+    ├── 📜onnx_generator.py
+    ├── 📜Pre_Processing.py
+    ├── 📜README.md
+    └── 📂Weights
+```
 ## Getting Started
 
 
