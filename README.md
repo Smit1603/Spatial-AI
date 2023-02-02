@@ -2,6 +2,7 @@
 
 
 ## Table of contents
+- [Introduction](#Introduction)
 - [Aim](#Aim)
 - [About the Project](#About-The-Project)
 - [File Structure](#File-Structure)
@@ -13,6 +14,16 @@
   - [Part 3 : Fusion Of Stereo And MDE](#Part-3--Fusing-Stereo-Disparity-Map-and-MDE-Disparity-Map)
 -  [Results](#Results)
 -  [License](#License)
+
+## Introduction
+
+
+OpenCV AI Competition is an international open source competition on computer vision by OpenCV Foundation.
+2022 edition of the competition has two exciting tracks - Core OpenCV & Spatial AI.
+
+Spatial AI track aims to develop a high-quality depth estimation project using OpenCV AI Kit with Depth Pro (OAK-D-Pro) Spatial AI Camera. This camera was designed and developed by Luxonis.
+
+[OpenCV AI Competition 2022](#https://opencv.org/opencv-ai-competition-2022/)
 
 ## Aim
 
@@ -33,64 +44,15 @@ Depth Estimation algorithms using Neural Networks have made enormous strides rec
 📦Spatial-AI-main
 ├── 📂Assets
 │   ├── 📂Images
-│   │   ├── 📜Canny_formula.png
-│   │   ├── 📜Canny_On_RGB.png
-│   │   ├── 📜FusedImg.png
-│   │   ├── 📜Fusion_Formula.png
-│   │   ├── 📜Midasimage.png
-│   │   ├── 📜Nzm_Nzs.png
-│   │   ├── 📜OrgRGB.png
-│   │   ├── 📜Original_RGB.png
-│   │   ├── 📜Raw_stereo.jpeg
-│   │   ├── 📜ResultVideo1_Fusion_1.gif
-│   │   ├── 📜ResultVideo1_Midas_1.gif
-│   │   ├── 📜ResultVideo1_RGB_1.gif
-│   │   ├── 📜ResultVideo1_Stereo_1.gif
-│   │   ├── 📜ResultVideo2_Fusion.gif
-│   │   ├── 📜ResultVideo2_Midas.gif
-│   │   ├── 📜ResultVideo2_RGB.gif
-│   │   ├── 📜ResultVideo2_Stereo.gif
-│   │   ├── 📜StereoImg.png
-│   │   ├── 📜Stereo_pre_post.jpeg
-│   │   ├── 📜Wc_Canny.png
-│   │   ├── 📜Wc_example.png
-│   │   ├── 📜Wc_formula.png
-│   │   ├── 📜Wc_OAKD.png
-│   │   └── 📜Ws.png
 │   ├── 📜README.md
 │   ├── 📂Results
 │   │   ├── 📂Result_Image_1
-│   │   │   ├── 📜FrameMidas_2.jpg
-│   │   │   ├── 📜FrameRGB_2.jpg
-│   │   │   ├── 📜FrameStereo_2.jpg
-│   │   │   └── 📜FusedRGB_2.jpg
 │   │   ├── 📂Result_Image_2
-│   │   │   ├── 📜FrameMidas_3.jpg
-│   │   │   ├── 📜FrameRGB_3.jpg
-│   │   │   ├── 📜FrameStereo_3.jpg
-│   │   │   └── 📜FusedRGB_3.jpg
 │   │   ├── 📂Result_Image_3
-│   │   │   ├── 📜FrameMidas_4.jpg
-│   │   │   ├── 📜FrameRGB_4.jpg
-│   │   │   ├── 📜FrameStereo_4.jpg
-│   │   │   └── 📜FusedRGB_4.jpg
-│   │   ├── 📂Results_Image_4
-│   │   │   ├── 📜FrameMidas_6.jpg
-│   │   │   ├── 📜FrameRGB_6.jpg
-│   │   │   ├── 📜FrameStereo_6.jpg
-│   │   │   └── 📜FusedRGB_6.jpg
+│   │   ├── 📂Result_Image_4
 │   │   ├── 📂Result_Video_1
-│   │   │   ├── 📜ResultVideo1_Fusion.avi
-│   │   │   ├── 📜ResultVideo1_Midas.avi
-│   │   │   ├── 📜ResultVideo1_RGB.avi
-│   │   │   └── 📜ResultVideo1_Stereo.avi
 │   │   └── 📂Result_Video_2
-│   │       ├── 📜ResultVideo2_Fusion.avi
-│   │       ├── 📜ResultVideo2_Midas.avi
-│   │       ├── 📜ResultVideo2_RGB.avi
-│   │       └── 📜ResultVideo2_Stereo.avi
 │   └── 📂Videos
-│       └── 📜Synced_FUSION.mp4
 ├── 📂Fusion
 │   ├── 📜Fusion_Canny.py
 │   ├── 📜Fusion_Laptop.py
@@ -119,7 +81,7 @@ Depth Estimation algorithms using Neural Networks have made enormous strides rec
 
 ## Prerequisites And Installations
 
-1. Install Depthai and many other important librariesutilized in this project by running following command :
+1. Install Depthai and many other important libraries utilized in this project by running following command :
 ```
     pip install -r requirements.txt
 ```
@@ -132,6 +94,13 @@ Depth Estimation algorithms using Neural Networks have made enormous strides rec
 ### Part 1 : Implementing Pre + Post Processing
 
 While going through various research paper we found that performing pre processing on stereo left and stereo right image and then implementing stereo rectification as well as triangulation method increases depth perception of camera manifolds. As well as reduce its noise.Preprocessing on images with certain touch on it with inbuilt OAK D post processing  filters has improved its depth a lot.
+
+
+|Implemented Pipeline:|
+|-----------|
+|![OAK-D Pipeline_1](Assets/Images/Pipeline_1.jpeg)|
+
+
 For Example , 
 |Stereo Map Generated By OAK-D|Stereo Map After Pre+Post Processing|
 |--------|---------|
@@ -166,6 +135,12 @@ MiDaS was trained on 10 datasets (ReDWeb, DIML, Movies, MegaDepth, WSVD, TartanA
 
 In this approach we fuse disparity map generated by OAK-D using stereo cameras and disparity map generated using MiDAS model (MDE) on rgb video. This method aims to combine excellent features of Stereo as well as Monocular Depth Estimations and reduce noise generated by one disparity map by superimposing quality of other disparity map.
 For further information kindly check folder [Fusion](Fusion)
+
+
+|Implemented Pipeline:|
+|-----------|
+|![OAK-D Pipeline](Assets/Images/Pipeline.jpeg)|
+
 
 | Original Scene | Steeo Disparity By OAK-D | MiDAS Disparity | Fused Disparity Map |
 |--------|--------|--------|--------|
